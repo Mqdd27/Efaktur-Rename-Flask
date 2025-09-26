@@ -38,10 +38,9 @@ def _normalize_for_search(s: str) -> str:
     return s
 
 
-def _invoice_ref_to_filename(ref: str) -> str:
-    """Ganti '/' jadi '-' agar aman untuk nama file Windows."""
-    return ref.replace("/", "-")
-
+def _invoice_ref_to_filename(ref: str, allow_unicode_slash: bool = True) -> str:
+    # ganti '/' ASCII -> FULLWIDTH SLASH '／' (U+FF0F) agar "terlihat" slash tapi aman di Windows
+    return ref.replace("/", "／") if allow_unicode_slash else ref.replace("/", "-")
 
 def parse_pdf_fields(file_bytes: bytes) -> Tuple[Optional[str], Optional[str]]:
     """
@@ -90,13 +89,12 @@ def parse_pdf_fields(file_bytes: bytes) -> Tuple[Optional[str], Optional[str]]:
     return (ref or None), (seri or None)
 
 
-def build_new_name(ref: Optional[str], seri: Optional[str]) -> Optional[str]:
-    """Format nama akhir: '<InvoiceRef> - <NoSeri>.pdf'."""
+def build_new_name(ref: Optional[str], seri: Optional[str], pretty_slash: bool = True) -> Optional[str]:
     if not ref or not seri:
         return None
-    base = _sanitize(f"{ref} - {seri}")
+    ref_disp = _invoice_ref_to_filename(_sanitize(ref), allow_unicode_slash=pretty_slash)
+    base = _sanitize(f"{ref_disp} - _{seri}")
     return f"{base}.pdf" if base else None
-
 
 def process_files(file_storages, dry_run: bool = False):
     """
@@ -120,7 +118,7 @@ def process_files(file_storages, dry_run: bool = False):
             continue
 
         ref, seri = parse_pdf_fields(data)
-        new_name = build_new_name(ref, seri)
+        new_name = build_new_name(ref, seri, pretty_slash=True)
 
         if new_name:
             # Hindari duplikat nama di batch

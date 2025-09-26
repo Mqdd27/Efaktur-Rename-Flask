@@ -36,7 +36,7 @@ def upload_file():
         return send_file(
             io.BytesIO(blob),
             as_attachment=True,
-            download_name=secure_filename(name),
+            download_name=name,  # <-- jangan secure_filename
             mimetype="application/pdf",
         )
 
@@ -44,7 +44,7 @@ def upload_file():
     buff = io.BytesIO()
     with zipfile.ZipFile(buff, 'w', zipfile.ZIP_DEFLATED) as zf:
         for name, blob in outputs:
-            zf.writestr(secure_filename(name) or "renamed.pdf", blob)
+            zf.writestr(name, blob)  # <-- jangan secure_filename di sini juga
         zf.writestr("LOG.txt", "\n".join(results).encode("utf-8"))
     buff.seek(0)
 
