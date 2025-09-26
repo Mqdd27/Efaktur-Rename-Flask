@@ -93,7 +93,7 @@ def build_new_name(ref: Optional[str], seri: Optional[str], pretty_slash: bool =
     if not ref or not seri:
         return None
     ref_disp = _invoice_ref_to_filename(_sanitize(ref), allow_unicode_slash=pretty_slash)
-    base = _sanitize(f"{ref_disp} - _{seri}")
+    base = _sanitize(f"{ref_disp} - {seri}")
     return f"{base}.pdf" if base else None
 
 def process_files(file_storages, dry_run: bool = False):
