@@ -45,7 +45,7 @@ def upload_file():
     with zipfile.ZipFile(buff, 'w', zipfile.ZIP_DEFLATED) as zf:
         for name, blob in outputs:
             zf.writestr(name, blob)  # <-- jangan secure_filename di sini juga
-        zf.writestr("LOG.txt", "\n".join(results).encode("utf-8"))
+        # zf.writestr("LOG.txt", "\n".join(results).encode("utf-8"))
     buff.seek(0)
 
     return send_file(
