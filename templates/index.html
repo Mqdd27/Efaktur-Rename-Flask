@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <title>Rename Faktur PDF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; padding: 24px; max-width: 900px; margin: auto; }
+      .card { border: 1px solid #ddd; border-radius: 12px; padding: 20px; }
+      .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+      button { background: #0d6efd; color: white; border: 0; border-radius: 8px; padding: 10px 16px; cursor: pointer; }
+      input[type=file] { padding: 8px; }
+      label { display: inline-flex; gap: 8px; align-items: center; }
+    </style>
+  </head>
+  <body>
+    <h1>Rename Faktur PDF</h1>
+    <div class="card">
+      <form action="/" method="post" enctype="multipart/form-data">
+        <div class="row">
+          <input type="file" name="file" accept="application/pdf" multiple required>
+          <label>
+            <input type="checkbox" name="dry_run" value="1">
+            Dry run (hanya tampilkan hasil)
+          </label>
+        </div>
+        <p>Pilih satu atau lebih file PDF, lalu klik proses.</p>
+        <button type="submit">Proses</button>
+      </form>
+    </div>
+  </body>
+</html>
