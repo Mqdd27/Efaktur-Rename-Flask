@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-source venv/Scripts/activate
+source venv/bin/activate
 flask run -h localhost
